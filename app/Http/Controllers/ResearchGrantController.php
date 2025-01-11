@@ -13,7 +13,7 @@ class ResearchGrantController extends Controller
      */
     public function index()
     {
-        $researchGrants = ResearchGrant::all();
+        $researchGrants = ResearchGrant::with('projectLeader')->get();;
         return view('research-grants.index', compact('researchGrants'));
     }
 
@@ -22,7 +22,7 @@ class ResearchGrantController extends Controller
      */
     public function create()
     {
-        $academicians = Academician::all();
+        $academicians = Academician::all(); 
         return view('research-grants.create', compact('academicians'));
     }
 
@@ -32,16 +32,24 @@ class ResearchGrantController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'project_leader_id' => 'required|exists:academicians,StaffID',
+            'ProjectTitle' => 'required',
             'GrantAmount' => 'required|numeric',
-            'GrantProvider' => 'required|string',
-            'ProjectTitle' => 'required|string',
+            'GrantProvider' => 'required',
             'StartDate' => 'required|date',
             'Duration' => 'required|integer',
+            'project_leader_id' => 'required|exists:academicians,StaffID',
         ]);
-
-        ResearchGrant::create($request->all());
-        return redirect()->route('research-grants.index');
+    
+        $researchGrant = new ResearchGrant();
+        $researchGrant->ProjectTitle = $request->ProjectTitle;
+        $researchGrant->GrantAmount = $request->GrantAmount;
+        $researchGrant->GrantProvider = $request->GrantProvider;
+        $researchGrant->StartDate = $request->StartDate;
+        $researchGrant->Duration = $request->Duration;
+        $researchGrant->project_leader_id = $request->project_leader_id;
+        $researchGrant->save();
+    
+        return redirect()->route('research-grants.index')->with('success', 'Research grant created successfully');
     }
 
     /**
