@@ -12,11 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('research_grants', function (Blueprint $table) {
-            $table->id();
+            $table->id('GrantID');
+            $table->foreignId('project_leader_id')->constrained('academicians')->onDelete('cascade');
+            $table->decimal('GrantAmount', 15, 2);
+            $table->string('GrantProvider');
+            $table->string('ProjectTitle');
+            $table->date('StartDate');
+            $table->integer('Duration'); // Duration in months
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */
