@@ -8,29 +8,40 @@
         @csrf
         @method('PUT')
 
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" name="name" class="form-control" value="{{ $academician->name }}" required>
+        <div class="mb-3">
+            <label for="StaffID" class="form-label">Staff ID</label>
+            <input type="text" class="form-control" id="StaffID" name="StaffID"  value="{{ $academician->StaffID }}" readonly>
         </div>
 
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" name="email" class="form-control" value="{{ $academician->email }}" required>
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" name="name"  value="{{ old('name', $academician->name) }}" required>
         </div>
 
-        <div class="form-group">
-            <label for="college">College</label>
-            <input type="text" name="college" class="form-control" value="{{ $academician->college }}" required>
+        <div class="mb-3">
+            <label for="Position" class="form-label">Position</label>
+            <select class="form-select" id="Position" name="Position"  value="{{ old('Position', $academician->Position) }}" required>
+                <option value="">Select Position</option>
+                <option value="Professor">Professor</option>
+                <option value="Assoc Prof">Assoc Prof</option>
+                <option value="Senior Lecturer">Senior Lecturer</option>
+                <option value="Lecturer">Lecturer</option>
+            </select>
         </div>
 
-        <div class="form-group">
-            <label for="department">Department</label>
-            <input type="text" name="department" class="form-control" value="{{ $academician->department }}" required>
+        <div class="mb-3">
+            <label for="Email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="Email" name="Email" value="{{ old('Email', $academician->Email) }}"required>
         </div>
 
-        <div class="form-group">
-            <label for="position">Position</label>
-            <input type="text" name="position" class="form-control" value="{{ $academician->position }}" required>
+        <div class="mb-3">
+            <label for="College" class="form-label">College</label>
+            <input type="text" class="form-control" id="College" name="College" value="{{ old('College', $academician->College) }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="Department" class="form-label">Department</label>
+            <input type="text" class="form-control" id="Department" name="Department" value="{{ old('Department', $academician->Department) }}" required>
         </div>
 
         <button type="submit" class="btn btn-primary">Update</button>

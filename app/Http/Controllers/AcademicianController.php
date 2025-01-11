@@ -30,14 +30,24 @@ class AcademicianController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'Email' => 'required|email|unique:academicians',
-            'College' => 'required|string',
-            'Department' => 'required|string',
-            'Position' => 'required|string',
+            'StaffID' => 'required|unique:academicians,StaffID',
+            'name' => 'required',
+            'Position' => 'required',
+            'Email' => 'required|email',
+            'College' => 'required',
+            'Department' => 'required',
         ]);
-
-        Academician::create($request->all());
-        return redirect()->route('academicians.index');
+    
+        Academician::create([
+            'StaffID' => $request->input('StaffID'),
+            'name' => $request->input('name'),
+            'Position' => $request->input('Position'),
+            'Email' => $request->input('Email'),
+            'College' => $request->input('College'),
+            'Department' => $request->input('Department'),
+        ]);
+    
+        return redirect()->route('academicians.index')->with('success', 'Academician added successfully!');
     }
 
     /**
@@ -51,35 +61,37 @@ class AcademicianController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($StaffID)
     {
-        $academician = Academician::findOrFail($id);
+        $academician = Academician::findOrFail($StaffID);
         return view('academicians.edit', compact('academician'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request,$StaffID)
     {
         $request->validate([
+            'name' => 'required',
             'Email' => 'required|email',
-            'College' => 'required|string',
-            'Department' => 'required|string',
-            'Position' => 'required|string',
+            'College' => 'required',
+            'Department' => 'required',
+            'Position' => 'required',
         ]);
 
-        $academician = Academician::findOrFail($id);
+        $academician = Academician::findOrFail($StaffID);
         $academician->update($request->all());
-        return redirect()->route('academicians.index');
+
+        return redirect()->route('academicians.index')->with('success', 'Academician updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($StaffID)
     {
-        $academician = Academician::findOrFail($id);
+        $academician = Academician::findOrFail($StaffID);
         $academician->delete();
         return redirect()->route('academicians.index');
     }

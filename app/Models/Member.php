@@ -10,7 +10,12 @@ class Member extends Model
     use HasFactory;
 
     protected $fillable = [
-        'research_grant_id', 'academician_id'
+        'StaffID',
+        'name',       
+        'Email',
+        'College',
+        'Department',
+        'Position'
     ];
 
     public function researchGrant()

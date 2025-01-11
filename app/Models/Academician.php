@@ -9,8 +9,18 @@ class Academician extends Model
 {
     use HasFactory;
 
+    protected $table = 'academicians';
+    protected $primaryKey = 'StaffID'; // Specify primary key
+    public $incrementing = false; 
+    protected $keyType = 'string'; 
+
     protected $fillable = [
-        'Email', 'College', 'Department', 'Position'
+        'StaffID',
+        'name',
+        'Position',
+        'Email',
+        'College',
+        'Department',
     ];
 
     public function researchGrants()

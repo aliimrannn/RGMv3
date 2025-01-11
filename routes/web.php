@@ -11,7 +11,7 @@ Route::get('/', function () {
 });
 
 // Research Grant Routes
-Route::resource('researchgrants', ResearchGrantController::class);
+Route::resource('research-grants', ResearchGrantController::class);
 
 // Milestone Routes
 Route::resource('milestones', MilestoneController::class);
