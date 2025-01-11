@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Academician;
 use Illuminate\Http\Request;
 
 class AcademicianController extends Controller
@@ -11,7 +12,8 @@ class AcademicianController extends Controller
      */
     public function index()
     {
-        //
+        $academicians = Academician::all();
+        return view('academicians.index', compact('academicians'));
     }
 
     /**
@@ -19,7 +21,7 @@ class AcademicianController extends Controller
      */
     public function create()
     {
-        //
+        return view('academicians.create');
     }
 
     /**
@@ -27,7 +29,15 @@ class AcademicianController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'Email' => 'required|email|unique:academicians',
+            'College' => 'required|string',
+            'Department' => 'required|string',
+            'Position' => 'required|string',
+        ]);
+
+        Academician::create($request->all());
+        return redirect()->route('academicians.index');
     }
 
     /**
@@ -43,7 +53,8 @@ class AcademicianController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $academician = Academician::findOrFail($id);
+        return view('academicians.edit', compact('academician'));
     }
 
     /**
@@ -51,7 +62,16 @@ class AcademicianController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'Email' => 'required|email',
+            'College' => 'required|string',
+            'Department' => 'required|string',
+            'Position' => 'required|string',
+        ]);
+
+        $academician = Academician::findOrFail($id);
+        $academician->update($request->all());
+        return redirect()->route('academicians.index');
     }
 
     /**
@@ -59,6 +79,8 @@ class AcademicianController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $academician = Academician::findOrFail($id);
+        $academician->delete();
+        return redirect()->route('academicians.index');
     }
 }

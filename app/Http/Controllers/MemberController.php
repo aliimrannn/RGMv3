@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Member;
+use App\Models\Academician;
+use App\Models\ResearchGrant;
 use Illuminate\Http\Request;
 
 class MemberController extends Controller
@@ -11,7 +14,10 @@ class MemberController extends Controller
      */
     public function index()
     {
-        //
+        $researchGrant = ResearchGrant::findOrFail($researchGrantId);
+        $members = $researchGrant->members;
+        $academicians = Academician::all();
+        return view('members.index', compact('researchGrant', 'members', 'academicians'));
     }
 
     /**
@@ -27,7 +33,16 @@ class MemberController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'academician_id' => 'required|exists:academicians,StaffID',
+        ]);
+
+        Member::create([
+            'research_grant_id' => $researchGrantId,
+            'academician_id' => $request->academician_id,
+        ]);
+
+        return redirect()->route('members.index', ['researchGrantId' => $researchGrantId]);
     }
 
     /**
@@ -59,6 +74,11 @@ class MemberController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $member = Member::where('research_grant_id', $researchGrantId)
+                        ->where('id', $memberId)
+                        ->firstOrFail();
+        $member->delete();
+
+        return redirect()->route('members.index', ['researchGrantId' => $researchGrantId]);
     }
 }

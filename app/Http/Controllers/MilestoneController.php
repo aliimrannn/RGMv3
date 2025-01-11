@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Milestone;
+use App\Models\ResearchGrant;
 use Illuminate\Http\Request;
 
 class MilestoneController extends Controller
@@ -11,7 +13,9 @@ class MilestoneController extends Controller
      */
     public function index()
     {
-        //
+        $researchGrant = ResearchGrant::findOrFail($researchGrantId);
+        $milestones = $researchGrant->milestones;
+        return view('milestones.index', compact('researchGrant', 'milestones'));
     }
 
     /**
@@ -27,7 +31,24 @@ class MilestoneController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'MilestoneName' => 'required|string',
+            'TargetCompletionDate' => 'required|date',
+            'Status' => 'required|string',
+            'Remarks' => 'nullable|string',
+            'Deliverable' => 'required|string',
+        ]);
+
+        Milestone::create([
+            'research_grant_id' => $researchGrantId,
+            'MilestoneName' => $request->MilestoneName,
+            'TargetCompletionDate' => $request->TargetCompletionDate,
+            'Status' => $request->Status,
+            'Remarks' => $request->Remarks,
+            'Deliverable' => $request->Deliverable,
+        ]);
+
+        return redirect()->route('milestones.index', ['researchGrantId' => $researchGrantId]);  
     }
 
     /**
@@ -51,7 +72,20 @@ class MilestoneController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'MilestoneName' => 'required|string',
+            'TargetCompletionDate' => 'required|date',
+            'Status' => 'required|string',
+            'Remarks' => 'nullable|string',
+            'Deliverable' => 'required|string',
+        ]);
+
+        $milestone = Milestone::where('research_grant_id', $researchGrantId)
+                             ->where('id', $milestoneId)
+                             ->firstOrFail();
+        $milestone->update($request->all());
+
+        return redirect()->route('milestones.index', ['researchGrantId' => $researchGrantId]);
     }
 
     /**
@@ -59,6 +93,11 @@ class MilestoneController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $milestone = Milestone::where('research_grant_id', $researchGrantId)
+                              ->where('id', $milestoneId)
+                              ->firstOrFail();
+        $milestone->delete();
+
+        return redirect()->route('milestones.index', ['researchGrantId' => $researchGrantId]);
     }
 }

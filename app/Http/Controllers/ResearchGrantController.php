@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ResearchGrant;
+use App\Models\Academician;
 use Illuminate\Http\Request;
 
 class ResearchGrantController extends Controller
@@ -11,7 +13,8 @@ class ResearchGrantController extends Controller
      */
     public function index()
     {
-        //
+        $researchGrants = ResearchGrant::all();
+        return view('research-grants.index', compact('researchGrants'));
     }
 
     /**
@@ -19,7 +22,8 @@ class ResearchGrantController extends Controller
      */
     public function create()
     {
-        //
+        $academicians = Academician::all();
+        return view('research-grants.create', compact('academicians'));
     }
 
     /**
@@ -27,7 +31,17 @@ class ResearchGrantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'project_leader_id' => 'required|exists:academicians,StaffID',
+            'GrantAmount' => 'required|numeric',
+            'GrantProvider' => 'required|string',
+            'ProjectTitle' => 'required|string',
+            'StartDate' => 'required|date',
+            'Duration' => 'required|integer',
+        ]);
+
+        ResearchGrant::create($request->all());
+        return redirect()->route('research-grants.index');
     }
 
     /**
@@ -43,7 +57,9 @@ class ResearchGrantController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $researchGrant = ResearchGrant::findOrFail($id);
+        $academicians = Academician::all();
+        return view('research-grants.edit', compact('researchGrant', 'academicians'));
     }
 
     /**
@@ -51,7 +67,18 @@ class ResearchGrantController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'project_leader_id' => 'required|exists:academicians,StaffID',
+            'GrantAmount' => 'required|numeric',
+            'GrantProvider' => 'required|string',
+            'ProjectTitle' => 'required|string',
+            'StartDate' => 'required|date',
+            'Duration' => 'required|integer',
+        ]);
+
+        $researchGrant = ResearchGrant::findOrFail($id);
+        $researchGrant->update($request->all());
+        return redirect()->route('research-grants.index');
     }
 
     /**
@@ -59,6 +86,8 @@ class ResearchGrantController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $researchGrant = ResearchGrant::findOrFail($id);
+        $researchGrant->delete();
+        return redirect()->route('research-grants.index');
     }
 }
