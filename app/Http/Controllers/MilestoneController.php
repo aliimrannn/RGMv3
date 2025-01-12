@@ -11,19 +11,21 @@ class MilestoneController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($researchGrantId)
     {
-        $researchGrant = ResearchGrant::findOrFail($researchGrantId);
-        $milestones = $researchGrant->milestones;
-        return view('milestones.index', compact('researchGrant', 'milestones'));
+        $milestones = Milestone::where('research_grant_id', $researchGrantId)->get();
+
+        return view('milestones.index', compact('milestones', 'researchGrantId'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($researchGrantId)
     {
-        //
+        $researchGrant = ResearchGrant::where('GrantID', $researchGrantId)->firstOrFail();
+
+        return view('milestones.create', compact('researchGrant'));
     }
 
     /**

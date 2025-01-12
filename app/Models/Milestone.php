@@ -15,6 +15,6 @@ class Milestone extends Model
 
     public function researchGrant()
     {
-        return $this->belongsTo(ResearchGrant::class);
+        return $this->belongsTo(ResearchGrant::class, 'research_grant_id', 'GrantID');
     }
 }

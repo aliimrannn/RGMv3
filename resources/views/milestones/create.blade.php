@@ -8,6 +8,11 @@
         @csrf
 
         <div class="form-group">
+            <label for="MilestoneID">Milestone ID</label>
+            <input type="text" name="MilestoneID" class="form-control" required>
+        </div>
+
+        <div class="form-group">
             <label for="MilestoneName">Milestone Name</label>
             <input type="text" name="MilestoneName" class="form-control" required>
         </div>

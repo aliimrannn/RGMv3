@@ -25,11 +25,6 @@ class Academician extends Model
 
     public function researchGrants()
     {
-        return $this->hasMany(ResearchGrant::class, 'project_leader_id');
-    }
-
-    public function projectsAsMember()
-    {
-        return $this->belongsToMany(ResearchGrant::class, 'members', 'academician_id', 'research_grant_id');
+        return $this->belongsToMany(ResearchGrant::class, 'grant_members', 'staff_id', 'grant_id');
     }
 }

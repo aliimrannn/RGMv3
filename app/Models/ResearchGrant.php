@@ -24,6 +24,16 @@ class ResearchGrant extends Model
 
     protected $keyType = 'string'; // since GrantID is a string
 
+    public function academicians()
+    {
+        return $this->belongsToMany(Academician::class, 'grant_members', 'grant_id', 'staff_id');
+    }
+
+    public function milestones()
+    {
+        return $this->hasMany(Milestone::class, 'research_grant_id', 'GrantID');
+    }
+
     public function projectLeader()
     {
         return $this->belongsTo(Academician::class, 'project_leader_id', 'StaffID');

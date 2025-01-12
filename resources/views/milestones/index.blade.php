@@ -2,32 +2,39 @@
 
 @section('content')
 <div class="container">
-    <h1>Milestones</h1>
-    <a href="{{ route('milestones.create') }}" class="btn btn-primary mb-3">Add New Milestone</a>
+    <h1>Milestones for Grant ID: {{ $researchGrantId }}</h1>
 
-    <table class="table table-bordered">
+    <a href="{{ route('milestones.create', $researchGrantId) }}" class="btn btn-success">Add Milestone</a>
+
+    <table class="table">
         <thead>
             <tr>
-                <th>Milestone Title</th>
-                <th>Deadline</th>
+                <th>Milestone Name</th>
+                <th>Target Completion Date</th>
+                <th>Status</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($milestones as $milestone)
+            @forelse ($milestones as $milestone)
                 <tr>
-                    <td>{{ $milestone->MilestoneTitle }}</td>
-                    <td>{{ $milestone->Deadline }}</td>
+                    <td>{{ $milestone->MilestoneName }}</td>
+                    <td>{{ $milestone->TargetCompletionDate }}</td>
+                    <td>{{ $milestone->Status }}</td>
                     <td>
-                        <a href="{{ route('milestones.edit', $milestone->MilestoneID) }}" class="btn btn-warning">Edit</a>
-                        <form action="{{ route('milestones.destroy', $milestone->MilestoneID) }}" method="POST" style="display:inline;">
+                        <a href="{{ route('milestones.edit', [$researchGrantId, $milestone->id]) }}" class="btn btn-primary">Edit</a>
+                        <form action="{{ route('milestones.destroy', [$researchGrantId, $milestone->id]) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="4">No milestones available.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 </div>

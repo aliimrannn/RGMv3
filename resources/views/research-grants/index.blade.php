@@ -35,8 +35,15 @@
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
+
+                <!-- Add Milestone Button -->
+                <a href="{{ route('milestones.create', $researchGrant->GrantID) }}" class="btn btn-primary btn-sm">Add Milestone</a>
+
+                <!-- View Milestones Button -->
+                <a href="{{ route('milestones.index', $researchGrantId->GrantID) }}" class="btn btn-info btn-sm">View Milestones</a>
             </td>
         </tr>
+
         @endforeach
     </tbody>
 </table>
