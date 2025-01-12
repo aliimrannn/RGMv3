@@ -1,29 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
     <h1>Edit Milestone</h1>
 
-    <form action="{{ route('milestones.update', $milestone->MilestoneID) }}" method="POST">
+    <form action="{{ route('milestone.update', ['researchGrantId' => $researchGrant->ResearchGrantID, 'milestoneId' => $milestone->MilestoneID]) }}" method="POST">
         @csrf
         @method('PUT')
+        
+        <label for="Status">Status</label>
+        <input type="text" name="Status" value="{{ $milestone->Status }}" required><br>
 
-        <div class="form-group">
-            <label for="MilestoneName">Milestone Name</label>
-            <input type="text" name="MilestoneName" class="form-control" value="{{ $milestone->MilestoneName }}" required>
-        </div>
+        <label for="Remarks">Remarks</label>
+        <textarea name="Remarks">{{ $milestone->Remarks }}</textarea><br>
 
-        <div class="form-group">
-            <label for="TargetCompletionDate">Target Completion Date</label>
-            <input type="date" name="TargetCompletionDate" class="form-control" value="{{ $milestone->TargetCompletionDate }}" required>
-        </div>
-
-        <div class="form-group">
-            <label for="Deliverable">Deliverable</label>
-            <input type="text" name="Deliverable" class="form-control" value="{{ $milestone->Deliverable }}" required>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="submit">Update Milestone</button>
     </form>
-</div>
 @endsection

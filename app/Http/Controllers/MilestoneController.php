@@ -13,9 +13,9 @@ class MilestoneController extends Controller
      */
     public function index($researchGrantId)
     {
-        $milestones = Milestone::where('research_grant_id', $researchGrantId)->get();
-
-        return view('milestones.index', compact('milestones', 'researchGrantId'));
+        $researchGrant = ResearchGrant::findOrFail($researchGrantId);
+        $milestones = $researchGrant->milestones;
+        return view('milestone.index', compact('milestones', 'researchGrant'));
     }
 
     /**
@@ -23,9 +23,8 @@ class MilestoneController extends Controller
      */
     public function create($researchGrantId)
     {
-        $researchGrant = ResearchGrant::where('GrantID', $researchGrantId)->firstOrFail();
-
-        return view('milestones.create', compact('researchGrant'));
+        $researchGrant = ResearchGrant::findOrFail($researchGrantId);
+        return view('milestone.create', compact('researchGrant'));
     }
 
     /**
@@ -34,23 +33,19 @@ class MilestoneController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'MilestoneName' => 'required|string',
+            'MilestoneName' => 'required|string|max:255',
             'TargetCompletionDate' => 'required|date',
-            'Status' => 'required|string',
-            'Remarks' => 'nullable|string',
-            'Deliverable' => 'required|string',
+            'Deliverable' => 'required|string|max:255',
         ]);
 
         Milestone::create([
             'research_grant_id' => $researchGrantId,
             'MilestoneName' => $request->MilestoneName,
             'TargetCompletionDate' => $request->TargetCompletionDate,
-            'Status' => $request->Status,
-            'Remarks' => $request->Remarks,
             'Deliverable' => $request->Deliverable,
         ]);
 
-        return redirect()->route('milestones.index', ['researchGrantId' => $researchGrantId]);  
+        return redirect()->route('milestone.index', $researchGrantId);  
     }
 
     /**
@@ -66,7 +61,9 @@ class MilestoneController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $researchGrant = ResearchGrant::findOrFail($researchGrantId);
+        $milestone = Milestone::findOrFail($milestoneId);
+        return view('milestone.edit', compact('milestone', 'researchGrant'));
     }
 
     /**
@@ -75,19 +72,18 @@ class MilestoneController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'MilestoneName' => 'required|string',
-            'TargetCompletionDate' => 'required|date',
-            'Status' => 'required|string',
+            'Status' => 'required|string|max:255',
             'Remarks' => 'nullable|string',
-            'Deliverable' => 'required|string',
         ]);
 
-        $milestone = Milestone::where('research_grant_id', $researchGrantId)
-                             ->where('id', $milestoneId)
-                             ->firstOrFail();
-        $milestone->update($request->all());
+        $milestone = Milestone::findOrFail($milestoneId);
+        $milestone->update([
+            'Status' => $request->Status,
+            'Remarks' => $request->Remarks,
+            'DateUpdated' => now(),
+        ]);
 
-        return redirect()->route('milestones.index', ['researchGrantId' => $researchGrantId]);
+        return redirect()->route('milestone.index', $researchGrantId);
     }
 
     /**

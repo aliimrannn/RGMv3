@@ -13,9 +13,9 @@ Route::get('/', function () {
 Route::resource('research-grants', ResearchGrantController::class);
 
 // Milestone Routes
-Route::resource('milestones', MilestoneController::class);
-Route::get('/milestones/{researchGrantId}', [MilestoneController::class, 'index'])->name('milestones.index');
-Route::get('/milestones/{researchGrantId}/create', [MilestoneController::class, 'create'])->name('milestones.create');
+Route::prefix('researchgrant/{researchGrantId}')->group(function () {
+Route::resource('milestone', MilestoneController::class)->except(['show']);
+});
 
 // Academician Routes
 Route::resource('academicians', AcademicianController::class);
