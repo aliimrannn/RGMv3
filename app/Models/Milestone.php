@@ -10,13 +10,7 @@ class Milestone extends Model
     use HasFactory;
     protected $primaryKey = 'MilestoneID'; 
     protected $fillable = [
-        'research_grant_id',
-        'MilestoneName',
-        'TargetCompletionDate',
-        'Deliverable',
-        'Status',
-        'Remarks',
-        'DateUpdated',
+        'MilestoneName', 'TargetCompletionDate', 'Deliverable', 'research_grant_id',
     ];
 
     public function researchGrant()

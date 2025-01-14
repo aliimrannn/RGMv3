@@ -31,7 +31,7 @@ class ResearchGrant extends Model
 
     public function milestones()
     {
-        return $this->hasMany(Milestone::class);
+        return $this->hasMany(Milestone::class, 'research_grant_id');
     }
 
     public function projectLeader()

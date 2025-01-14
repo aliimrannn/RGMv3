@@ -15,7 +15,7 @@ class MilestoneController extends Controller
     {
         $researchGrant = ResearchGrant::findOrFail($researchGrantId);
         $milestones = $researchGrant->milestones;
-        return view('milestone.index', compact('milestones', 'researchGrant'));
+        return view('milestone.index', compact('milestones', 'researchGrantId'));
     }
 
     /**
@@ -24,7 +24,7 @@ class MilestoneController extends Controller
     public function create($researchGrantId)
     {
         $researchGrant = ResearchGrant::findOrFail($researchGrantId);
-        return view('milestone.create', compact('researchGrant'));
+        return view('milestone.create', compact('researchGrantId'));
     }
 
     /**

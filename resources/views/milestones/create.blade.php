@@ -1,19 +1,27 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Create Milestone for Research Grant: {{ $researchGrant->ResearchGrantName }}</h1>
+<div class="container">
+    <h1>Add New Milestone</h1>
 
-    <form action="{{ route('milestone.store', $researchGrant->ResearchGrantID) }}" method="POST">
+    <form action="{{ route('milestone.store', $researchGrantId) }}" method="POST">
         @csrf
-        <label for="MilestoneName">Milestone Name</label>
-        <input type="text" name="MilestoneName" required><br>
+        <div class="form-group">
+            <label for="MilestoneName">Milestone Name</label>
+            <input type="text" name="MilestoneName" class="form-control" required>
+        </div>
 
-        <label for="TargetCompletionDate">Target Completion Date</label>
-        <input type="date" name="TargetCompletionDate" required><br>
+        <div class="form-group">
+            <label for="TargetCompletionDate">Target Completion Date</label>
+            <input type="date" name="TargetCompletionDate" class="form-control" required>
+        </div>
 
-        <label for="Deliverable">Deliverable</label>
-        <input type="text" name="Deliverable" required><br>
+        <div class="form-group">
+            <label for="Deliverable">Deliverable</label>
+            <input type="text" name="Deliverable" class="form-control" required>
+        </div>
 
-        <button type="submit">Create Milestone</button>
+        <button type="submit" class="btn btn-primary mt-3">Add Milestone</button>
     </form>
+</div>
 @endsection
